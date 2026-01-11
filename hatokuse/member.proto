@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package member;
+
+service MemberService {
+  rpc Store (StoreRequest) returns (StoreReply);
+  rpc Get (GetRequest) returns (GetReply);
+}
+
+message StoreRequest {
+  string id = 1;
+  string message = 2;
+}
+
+message StoreReply {
+  bool ok = 1;
+}
+
+message GetRequest {
+  string id = 1;
+}
+
+message GetReply {
+  bool found = 1;
+  string message = 2;
+}
