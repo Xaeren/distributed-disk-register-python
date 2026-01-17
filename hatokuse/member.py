@@ -20,16 +20,16 @@ class Member(member_pb2_grpc.MemberServiceServicer):
 
     def Store(self, request, context):
         try:
-            with open(f"{STORAGE}/{request.id}.txt", "w", encoding="utf-8") as f:
-                f.write(request.message)
+            with open(f"{STORAGE}/{request.id}.txt", "wb", buffering=0) as f:
+                f.write(request.message.encode('utf-8'))
             return member_pb2.StoreReply(ok=True)
         except:
             return member_pb2.StoreReply(ok=False)
 
     def Get(self, request, context):
         try:
-            with open(f"{STORAGE}/{request.id}.txt", "r", encoding="utf-8") as f:
-                msg = f.read()
+            with open(f"{STORAGE}/{request.id}.txt", "rb") as f:
+                msg = f.read().decode('utf-8')
             return member_pb2.GetReply(found=True, message=msg)
         except:
             return member_pb2.GetReply(found=False, message="")
@@ -48,3 +48,4 @@ print("Member running on", PORT)
 threading.Thread(target=report, daemon=True).start()
 while True:
     time.sleep(1000)
+
